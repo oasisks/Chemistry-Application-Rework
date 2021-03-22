@@ -1,5 +1,4 @@
 import json
-import re
 
 
 class Elements:
@@ -93,11 +92,3 @@ class Elements:
             return self.__elements[self._getKey(name)]["ionization_energies"]
 
         return None
-
-
-elements = Elements()
-
-
-print(elements.getMass("hydrogen"))
-print(elements.getDensity("h"))
-# print(re.findall("[A-Z][a-z]?\d*|\(.*?\)\d+", "Ag3PO4"))
