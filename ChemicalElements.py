@@ -1,4 +1,5 @@
 import json
+import re
 
 
 class Elements:
@@ -19,6 +20,11 @@ class Elements:
             self.__symbolNamePair[key[1]] = key[0]
 
     def _getKey(self, name) -> "(name, symbol)":
+        """
+        returns a key of the elements dictionary
+        :param name: str (symbol or name)
+        :return: ()
+        """
         name = name.lower()
         if name in self.__nameSymbolPair:
             return name, self.__nameSymbolPair[name]
@@ -90,5 +96,33 @@ class Elements:
         """
         if self._getKey(name) is not None:
             return self.__elements[self._getKey(name)]["ionization_energies"]
+
+        return None
+
+    @staticmethod
+    def findAllConstituentElement(compound):
+        return re.findall("[A-Z][a-z]?\d*|\(.*?\)\d+", compound)
+
+    @staticmethod
+    def findElementSymbol(element):
+        """
+        Returns the symbol of the element (i.e. H2 - > H)
+        :param element: str
+        :return: str
+        """
+        return re.findall("[a-zA-z]", element)[0]
+
+    @staticmethod
+    def findCoefficientOfElement(element):
+        """
+        Returns the coefficient of an element (if there is coefficient)
+        :param element:
+        :return:
+        """
+        coefficient = re.findall("[0-9]", element)
+
+        # if there are coefficients
+        if coefficient:
+            return int(coefficient[0])
 
         return None

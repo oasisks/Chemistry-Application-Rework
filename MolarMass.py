@@ -9,15 +9,16 @@ class MolarMass:
 
     Cast string for formula.
     Cast float for the molar
+    Note: Kg gives less significant digits than g
     """
     def __init__(self, compound: str, kg=False):
         """
         :param compound: the chemical molecule (assuming the compound was syntax correctly)
         :param kg: Bool. Determines whether the values would be in grams or kilograms
         """
-        self.__compound = re.findall("[A-Z][a-z]?\d*|\(.*?\)\d+", compound)
-        self.__kg = kg
         self.__elements = Elements()
+        self.__compound = self.__elements.findAllConstituentElement(compound)
+        self.__kg = kg
         self.__molarMass = self._calculateMass()
 
     def __str__(self):
@@ -33,23 +34,23 @@ class MolarMass:
         """
         mass = 0
         for component in self.__compound:
-            element = re.findall("[a-zA-z]", component)[0]
-            number = re.findall("[0-9]", component)
+            element = self.__elements.findElementSymbol(component)
+            number = self.__elements.findCoefficientOfElement(component)
 
             # if its empty
-            if not number:
+            if number is None:
                 # there is only 1 element
                 mass += self.__elements.getMass(element)
             else:
-                mass += self.__elements.getMass(element) * int(number[0])
+                mass += self.__elements.getMass(element) * number
 
         if self.__kg:
-            return mass / 1000
+            return round(mass / 1000, 3)
 
-        return mass
+        return round(mass, 3)
 
 
 if __name__ == '__main__':
-    molarMass = MolarMass("H2SO4")
+    molarMass = MolarMass("C6H12O6", kg=False)
     print(molarMass)
     print(float(molarMass))
