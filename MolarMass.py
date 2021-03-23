@@ -1,4 +1,3 @@
-import re
 from ChemicalElements import Elements
 
 

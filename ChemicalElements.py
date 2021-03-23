@@ -123,6 +123,18 @@ class Elements:
 
         # if there are coefficients
         if coefficient:
-            return int(coefficient[0])
+            return int("".join(coefficient))
 
         return None
+
+    @staticmethod
+    def findAllElementSymbol(compound: str):
+        """
+        Returns a list of all elements within this compound
+        :param compound: str
+        :return: []
+        """
+
+        return re.findall("[a-zA-Z]", compound)
+
+
