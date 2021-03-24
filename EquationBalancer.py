@@ -77,16 +77,6 @@ class EquationBalancer:
         solution = linearRegression[0]
         residual = linearRegression[1]
 
-        # print(solution, residual)
-        # inverseMatrixA = np.linalg.inv(matrixA)
-        # print(f"Determinant: {determinantOfA}")
-        # print(f"Solution: {solution}")
-        # gcd = np.gcd.reduce(solution.astype(np.int64))
-        # coefficients = np.matmul(inverseMatrixA, vectorB) * determinantOfA
-        # coefficients = np.reshape(coefficients, coefficients.size).astype(np.int64)
-        # gcd = np.gcd.reduce(coefficients)
-        # coefficients = (coefficients / gcd).astype(np.int64)
-
         # if there are residuals
         if residual.size > 0:
             # this equation most likely does not exist in real life and probably has no real solution
