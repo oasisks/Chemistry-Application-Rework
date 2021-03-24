@@ -26,7 +26,7 @@ class EquationBalancer:
         availableElements = self.availableElements(reactants, products)
         matrixA = []
         vectorB = []
-        print(availableElements)
+        # Initialize the matrix and vector
         for availableElement in availableElements:
             matrixEntry = []
             vectorEntry = []
@@ -78,11 +78,21 @@ class EquationBalancer:
 
         matrixA = np.array(matrixA)
         vectorB = np.array(vectorB)
-        print(matrixA)
-        print(vectorB)
+
+        linearRegression = np.linalg.lstsq(matrixA, vectorB)
+        solution = linearRegression[0]
+        residual = linearRegression[1]
+
+        print(solution, residual)
+
+        # if there are no residuals
+        if not residual:
+            pass
+
         inverseMatrixA = np.linalg.inv(matrixA)
         determinantOfA = np.linalg.det(matrixA)
-
+        solution = solution * determinantOfA
+        print(f"Determinant: {determinantOfA}")
         coefficients = np.matmul(inverseMatrixA, vectorB) * determinantOfA
         coefficients = np.reshape(coefficients, coefficients.size).astype(np.int64)
         gcd = np.gcd.reduce(coefficients)
@@ -130,5 +140,5 @@ class EquationBalancer:
 
 
 if __name__ == '__main__':
-    balancer = EquationBalancer("C6H12O6 -> H2O + C2")
+    balancer = EquationBalancer("O2 + H2 -> H2O")
     print(balancer)
