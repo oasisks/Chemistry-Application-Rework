@@ -1,4 +1,5 @@
-from ChemicalElements import Elements
+from ChemicalElements import periodic_table
+from Compound import Compound
 
 
 class MolarMass:
@@ -15,8 +16,8 @@ class MolarMass:
         :param compound: the chemical molecule (assuming the compound was syntax correctly)
         :param kg: Bool. Determines whether the values would be in grams or kilograms
         """
-        self.__elements = Elements()
-        self.__compound = self.__elements.findAllConstituentElement(compound)
+        self.__elements = periodic_table
+        self.__compound = Compound(compound)
         self.__kg = kg
         self.__molarMass = self._calculateMass()
 
@@ -33,15 +34,11 @@ class MolarMass:
         """
         mass = 0
         for component in self.__compound:
-            element = self.__elements.findElementSymbol(component)
-            number = self.__elements.findCoefficientOfElement(component)
+            element = component
+            number = self.__compound[component]
 
             # if its empty
-            if number is None:
-                # there is only 1 element
-                mass += self.__elements.getMass(element)
-            else:
-                mass += self.__elements.getMass(element) * number
+            mass += periodic_table[element]["atomic_mass"] * number
 
         if self.__kg:
             return round(mass / 1000, 3)

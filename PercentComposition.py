@@ -1,4 +1,5 @@
-from ChemicalElements import Elements
+from ChemicalElements import periodic_table
+from Compound import Compound
 from MolarMass import MolarMass
 
 
@@ -9,7 +10,7 @@ class PercentComposition:
     (Percentage in decimals)
     """
     def __init__(self, compound=None, **kwargs):
-        self.__elements = Elements()
+        self.__elements = periodic_table
         self.__compound = compound
         self.__percentages = kwargs
         if compound is not None:
@@ -18,15 +19,15 @@ class PercentComposition:
     def elementPercentagesCalc(self):
         composition = {}
         if self.__compound is not None:
-            elements = self.__elements.findAllConstituentElement(self.__compound)
+            elements = Compound(self.__compound)
             for element in elements:
-                symbol = self.__elements.findElementSymbol(element)
-                coefficient = self.__elements.findCoefficientOfElement(element)
+                symbol = element
+                coefficient = elements[symbol]
 
                 if coefficient is not None:
-                    composition[symbol] = round(self.__elements.getMass(symbol) * coefficient / float(self.__molarMass), 4)
+                    composition[symbol] = round(periodic_table[symbol]["atomic_mass"] * coefficient / float(self.__molarMass), 4)
                 else:
-                    composition[symbol] = round(self.__elements.getMass(symbol) / float(self.__molarMass), 4)
+                    composition[symbol] = round(periodic_table[symbol]["atomic_mass"] / float(self.__molarMass), 4)
 
             return composition
 
@@ -37,7 +38,7 @@ class PercentComposition:
         smallestMol = None
         fractions = [0, 1/3, 0.25, 2/3, 0.5, 0.75, 1]
         for symbol, percentage in self.__percentages.items():
-            molecule[symbol] = percentage * 100 / self.__elements.getMass(symbol)  # find the number of moles
+            molecule[symbol] = percentage * 100 / periodic_table[symbol]["atomic_mass"]  # find the number of moles
             if smallestMol is None:
                 smallestMol = molecule[symbol]
             else:
