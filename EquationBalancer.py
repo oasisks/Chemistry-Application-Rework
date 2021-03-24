@@ -1,6 +1,7 @@
 import re
 import numpy as np
-from ChemicalElements import Elements
+from ChemicalElements import periodic_table
+from Compound import Compound
 
 
 class EquationBalancer:
@@ -10,7 +11,7 @@ class EquationBalancer:
 
     def __init__(self, unBalancedEquation: str):
         self.__unBalancedEquation = unBalancedEquation
-        self.__elements = Elements()
+        self.__elements = periodic_table
 
     def __str__(self):
         return self._findBalancedEquation(self.__unBalancedEquation)
@@ -33,42 +34,34 @@ class EquationBalancer:
 
             for index in range(len(reactants)):
                 exists = False
-                constituentParts = self.__elements.findAllConstituentElement(reactants[index])
-                for constituentPart in constituentParts:
-                    if availableElement in constituentPart:
+                compound = Compound(reactants[index])
+                for constituentPart in compound:
+                    if availableElement == constituentPart:
                         exists = True
-                        coefficient = self.__elements.findCoefficientOfElement(constituentPart)
-                        if coefficient is not None:
-                            matrixEntry.append(coefficient)
-                        else:
-                            matrixEntry.append(1)
+                        coefficient = compound[constituentPart]
+                        matrixEntry.append(coefficient)
                 if not exists:
                     matrixEntry.append(0)
 
             for index in range(len(products)):
                 exists = False
-                constituentParts = self.__elements.findAllConstituentElement(products[index])
+                compound = Compound(products[index])
+                constituentParts = compound.keys()
                 # last entry
                 if len(products) - 1 == index:
                     for constituentPart in constituentParts:
-                        if availableElement in constituentPart:
+                        if availableElement == constituentPart:
                             exists = True
-                            coefficient = self.__elements.findCoefficientOfElement(constituentPart)
-                            if coefficient is not None:
-                                vectorEntry.append(coefficient)
-                            else:
-                                vectorEntry.append(1)
+                            coefficient = compound[constituentPart]
+                            vectorEntry.append(coefficient)
                     if not exists:
                         vectorEntry.append(0)
                 else:
                     for constituentPart in constituentParts:
-                        if availableElement in constituentPart:
+                        if availableElement == constituentPart:
                             exists = True
-                            coefficient = self.__elements.findCoefficientOfElement(constituentPart)
-                            if coefficient is not None:
-                                matrixEntry.append(-coefficient)
-                            else:
-                                matrixEntry.append(-1)
+                            coefficient = compound[constituentPart]
+                            matrixEntry.append(-coefficient)
                             # matrixEntry.append(-coefficient)
                     if not exists:
                         matrixEntry.append(0)
@@ -118,11 +111,11 @@ class EquationBalancer:
 
     def availableElements(self, reactants, products):
         availableElements = []
-        elements = reactants + products
+        compounds = reactants + products
 
-        for element in elements:
-            constituentParts = self.__elements.findAllElementSymbol(element)
-            for part in constituentParts:
+        for compound in compounds:
+            compound = Compound(compound)
+            for part in compound:
                 if part not in availableElements:
                     availableElements.append(part)
 
