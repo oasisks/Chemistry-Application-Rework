@@ -66,6 +66,6 @@ async def on_message(message):
             await message.channel.send(f"Balanced Equation: {balancedEquation}")
         else:
             await message.channel.send(f"{author} no clue what you want.")
-
+#hlajiofsjalkfldsfsdafewsdsfadfasd
 
 client.run(TOKEN)
