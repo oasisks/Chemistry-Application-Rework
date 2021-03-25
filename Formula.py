@@ -67,4 +67,3 @@ if __name__ == '__main__':
     formula = Formula(C=0.2, H=0.3, N=0.5, mass=321)
     print(formula.empiricalFormula())
     print(formula.molecularFormula())
-

@@ -6,7 +6,7 @@ import typing
 from dotenv import load_dotenv
 
 from EquationBalancer import EquationBalancer
-from PercentComposition import PercentComposition
+from Compound import Compound
 
 load_dotenv(dotenv_path=".idea/.env")
 
@@ -45,6 +45,7 @@ async def on_message(message):
         command = message.content.replace("-chembot", "").strip()
 
         print(f"Command: {command}")
+        print(f"Command: {re.split(r'(?<=bal eq) ', command)}")
 
         if len(command) == 0:
             await message.channel.send(f"Missing command?")
@@ -52,13 +53,17 @@ async def on_message(message):
 
         # Molar mass
         if command == "molar mass":
-            await message.channel.send(f"{author} wants to know molar mass?")
+            await message.channel.send(f"{author} Please enter a compound.")
         # Percent Composition
         elif command == "percent comp":
-            await message.channel.send(f"{author} wants to know percent composition?")
+            await message.channel.send(f"{author} Please enter the percentages")
         # Equation Balancer
         elif command == "bal eq":
-            await message.channel.send(f"{author} wants to know a balanced chemical equation?")
+            print(re.split(r'(?<=bal eq) ', command))
+            await message.channel.send(f"{author} Please enter a chemical equation to balance.")
+            msg = await client.wait_for('message', timeout=60)
+            balancedEquation = EquationBalancer(msg.content)
+            await message.channel.send(f"Balanced Equation: {balancedEquation}")
         else:
             await message.channel.send(f"{author} no clue what you want.")
 

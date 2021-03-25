@@ -90,7 +90,7 @@ class EquationBalancer:
             solution = solution.astype(np.int64)
 
             for index, reactant in enumerate(reactants):
-                coefficient = abs(solution[index])
+                coefficient = abs(solution[index])[0]
                 if index == len(reactants) - 1:
                     if coefficient == 1:
                         balancedEquation += f"{reactant} ->"
@@ -134,5 +134,5 @@ class EquationBalancer:
 
 
 if __name__ == '__main__':
-    balancer = EquationBalancer("O2 -> H2O")
+    balancer = EquationBalancer("C6H12O6 + O2 -> CO2 + H2O")
     print(balancer)
