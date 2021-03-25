@@ -22,7 +22,7 @@ class MolarMass:
         self.__molarMass = self._calculateMass()
 
     def __str__(self):
-        return "".join(self.__compound)
+        return "".join([f"{symbol}{amount}" for symbol, amount in self.__compound.items()])
 
     def __float__(self):
         return self.__molarMass
@@ -33,6 +33,7 @@ class MolarMass:
         :return: float
         """
         mass = 0
+        print(self.__compound)
         for component in self.__compound:
             element = component
             number = self.__compound[component]
