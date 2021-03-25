@@ -1,4 +1,5 @@
 from re import findall, split
+from ChemicalElements import periodic_table
 
 _nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -54,6 +55,24 @@ class Compound(dict):
         else:
             return dict.__eq__(self, other)
 
+    def molarMass(self, kg=False):
+        mass = 0
+        for symbol, quantity in self.items():
+            mass += periodic_table[symbol]["atomic_mass"] * quantity
+
+        if kg:
+            return mass / 1000
+
+        return mass
+
+    def percentComposition(self) -> dict:
+        composition = {}
+        compoundMass = self.molarMass()
+        for symbol, quantity in self.items():
+            composition[symbol] = periodic_table[symbol]["atomic_mass"] / compoundMass
+
+        return composition
+
 
 def test(verbose=True):
     assert Compound("C6H12O6") == Compound({'C': 6, 'H': 12, 'O': 6}, charge=0)
@@ -66,3 +85,8 @@ def test(verbose=True):
 
 if __name__ == "__main__":
     test()
+    compound = Compound("HCOF")
+    mass = compound.molarMass(kg=True)
+    composition = compound.percentComposition()
+    print(mass)
+    print(composition)

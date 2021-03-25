@@ -6,7 +6,6 @@ import typing
 from dotenv import load_dotenv
 
 from EquationBalancer import EquationBalancer
-from MolarMass import MolarMass
 from PercentComposition import PercentComposition
 
 load_dotenv(dotenv_path=".idea/.env")
