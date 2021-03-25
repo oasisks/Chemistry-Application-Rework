@@ -255,8 +255,6 @@
     "N: 2NH3OH+ + H+ + 2e− ⇌ N2H+ 5 + 2H2O +1.42",
     "I: 2HIO + 2H+ + 2e− ⇌ I2 + 2H2O +1.44",
     "Br: BrO−3 + 5H+ + 4e− ⇌ HBrO + 2H2O +1.45",
-    "Pb: β-PbO2 + 4H+ + 2e− ⇌ Pb2+ + 2H2O +1.460",
-    "Pb: α-PbO2 + 4H+ + 2e− ⇌ Pb2+ + 2H2O +1.468",
     "Br: 2BrO−3 + 12 H+ + 10e− ⇌ Br2 + 6H2O +1.48",
     "Cl: 2ClO−3 + 12 H+ + 10e− ⇌ Cl2 + 6H2O +1.49",
     "Cl: HClO + H+ + 2e− ⇌ Cl− + H2O +1.49",
