@@ -45,25 +45,42 @@ async def on_message(message):
         command = message.content.replace("-chembot", "").strip()
 
         print(f"Command: {command}")
-        print(f"Command: {re.split(r'(?<=bal eq) ', command)}")
+        # print(f"Inputs: {inputs}")
+        # print(f"Command: {re.split(r'(?<=bal eq) ', command)}")
 
         if len(command) == 0:
             await message.channel.send(f"Missing command?")
             return
 
         # Molar mass
-        if command == "molar mass":
-            await message.channel.send(f"{author} Please enter a compound.")
-        # Percent Composition
-        elif command == "percent comp":
-            await message.channel.send(f"{author} Please enter the percentages")
-        # Equation Balancer
-        elif command == "bal eq":
-            print(re.split(r'(?<=bal eq) ', command))
-            await message.channel.send(f"{author} Please enter a chemical equation to balance.")
-            msg = await client.wait_for('message', timeout=60)
-            balancedEquation = EquationBalancer(msg.content)
-            await message.channel.send(f"Balanced Equation: {balancedEquation}")
+        if command.startswith("molar mass"):
+            command = re.split(r"(?<=mass) ", command)
+            inputs = command[1] if len(command) > 1 else None
+
+            if inputs is not None:
+                inputs = inputs.split(" ")
+                invalid = False
+                invalidCount = 0
+                for item in inputs:
+                    if Compound.isMalformed(item):
+                        invalidCount += 1
+                        invalid = True
+                if invalid:
+                    await message.channel.send(f"{author} {invalidCount} of the following "
+                                               f"{len(inputs)} inputs are invalid.")
+                print(inputs)
+            else:
+                await message.channel.send(f"{author} missing inputs.")
+        # # Percent Composition
+        # elif command.startswith("formula"):
+        #     await message.channel.send(f"{author} Please enter the percentages")
+        # # Equation Balancer
+        # elif command.startswith("bal eq"):
+        #     print(re.split(r'(?<=bal eq) ', command))
+        #     await message.channel.send(f"{author} Please enter a chemical equation to balance.")
+        #     msg = await client.wait_for('message', timeout=60)
+        #     balancedEquation = EquationBalancer(msg.content)
+        #     await message.channel.send(f"Balanced Equation: {balancedEquation}")
         else:
             await message.channel.send(f"{author} no clue what you want.")
 #hlajiofsjalkfldsfsdafewsdsfadfasd

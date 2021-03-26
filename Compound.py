@@ -1,4 +1,4 @@
-from re import findall, split
+from re import findall, split, compile, search
 from ChemicalElements import periodic_table
 
 _nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -76,6 +76,40 @@ class Compound(dict):
 
         return composition
 
+    @staticmethod
+    def isMalformed(equation: str):
+        equation = [[y.strip() for y in x.strip().split("+")] for x in split(r"->|=", equation)]
+        validChar = True
+        for row in equation:
+            for col in row:
+                for character in col:
+                    asciiVal = ord(character)
+                    if 48 <= asciiVal <= 57 or 65 <= asciiVal <= 90 or 97 <= asciiVal <= 122:
+                        continue
+
+                    # if at least one of the inputted compound does not have contain valid characters
+                    validChar = False
+
+        if validChar:
+            for row in equation:
+                for col in row:
+                    constituents = findall(r"[A-Z][a-z]*[0-9]*", col)
+                    if len(col) != len("".join(constituents)):
+                        # something is wrong with one or more of the expression
+                        return True
+
+                    # check if the constituent parts are within the periodic table
+                    # print(constituents)
+                    for constituent in constituents:
+                        element = split(r"(?<=[a-zA-Z])(?=[0-9])", constituent)[0]
+                        if element not in periodic_table:
+                            return True
+                        print(element)
+
+            return False
+
+        return True
+
 
 def test(verbose=True):
     assert Compound("C6H12O6") == Compound({'C': 6, 'H': 12, 'O': 6}, charge=0)
@@ -86,6 +120,9 @@ def test(verbose=True):
         print("All tests passed for Compound")
 
 
+
+
+
 if __name__ == "__main__":
     test()
     compound = Compound("HCOF")
@@ -93,3 +130,5 @@ if __name__ == "__main__":
     composition = compound.percentComposition()
     print(mass)
     print(composition)
+    print(Compound.isMalformed("H2O"))
+
