@@ -60,15 +60,20 @@ async def on_message(message):
             if inputs is not None:
                 inputs = inputs.split(" ")
                 invalid = False
-                invalidCount = 0
+                invalidInputs = []
+                compounds = []
                 for item in inputs:
                     if Compound.isMalformed(item):
-                        invalidCount += 1
+                        invalidInputs.append(item)
                         invalid = True
+                        continue
+                    compound = Compound(item)
+                    compounds.append(compound)
                 if invalid:
-                    await message.channel.send(f"{author} {invalidCount} of the following "
-                                               f"{len(inputs)} inputs are invalid.")
-                print(inputs)
+                    await message.channel.send(f"{author} Error: Invalid compound(s): "
+                                               f"{', '.join(invalidInputs)}. Please try again.")
+                else:
+                    await message.channel.send(f"{author} Molar Mass(es):\n {showMolarMass(compounds)}")
             else:
                 await message.channel.send(f"{author} missing inputs.")
         # # Percent Composition
@@ -83,6 +88,24 @@ async def on_message(message):
         #     await message.channel.send(f"Balanced Equation: {balancedEquation}")
         else:
             await message.channel.send(f"{author} no clue what you want.")
-#hlajiofsjalkfldsfsdafewsdsfadfasd
+
+
+def showMolarMass(compounds):
+    output = ""
+    for compound in compounds:
+        output += f"{compound}: {compound.molarMass()}\n"
+
+    return output
+
+
+def test(verbose=True):
+    assert showMolarMass([Compound("H2O"), Compound("SO4")]) == f"H2O: {Compound('H2O').molarMass()}\n" \
+                                                                f"SO4: {Compound('SO4').molarMass()}"
+    if verbose:
+        print("All tests passed for Compound")
+
 
 client.run(TOKEN)
+
+if __name__ == '__main__':
+    test()

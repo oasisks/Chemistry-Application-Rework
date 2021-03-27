@@ -58,6 +58,16 @@ class Compound(dict):
         else:
             return dict.__eq__(self, other)
 
+    def __str__(self):
+        formula = ""
+        for symbol, coefficient in self.items():
+            if coefficient == 1:
+                formula += f"{symbol}"
+                continue
+            formula += f"{symbol}{coefficient}"
+
+        return formula
+
     def molarMass(self, kg=False):
         mass = 0
         for symbol, quantity in self.items():
@@ -118,9 +128,6 @@ def test(verbose=True):
     assert Compound("2NH3O2H2-2") == Compound({"N": 1, "H": 5, "O": 2}, charge=-2)
     if verbose:
         print("All tests passed for Compound")
-
-
-
 
 
 if __name__ == "__main__":
