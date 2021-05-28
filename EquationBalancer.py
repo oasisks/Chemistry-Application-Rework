@@ -25,7 +25,9 @@ class EquationBalancer:
         reactants = rawEquation[0]
         products = rawEquation[1]
 
-        availableElements = self.availableElements(reactants, products)
+        print(f"{reactants=}, {products=}")
+        availableElements = self.availableElements(reactants, products)  # unique elements within the chem eq
+        print(f"{availableElements=}")
         matrixA = []
         vectorB = []
         # Initialize the matrix and vector
@@ -70,12 +72,15 @@ class EquationBalancer:
             matrixA.append(matrixEntry)
             vectorB.append(vectorEntry)
 
+        print(f"{matrixA=}, {vectorB=}")
         matrixA = np.array(matrixA)
         vectorB = np.array(vectorB)
 
         linearRegression = np.linalg.lstsq(matrixA, vectorB, rcond=None)
         solution = linearRegression[0]
-        residual = linearRegression[1]
+        residual = linearRegression[1]  # this shows whether there are real solutions or not
+
+        # print(f"{solution=}, {residual=}")
 
         # if there are residuals
         if residual.size > 0:
@@ -84,10 +89,15 @@ class EquationBalancer:
 
         if realSolution:
             determinantOfA = np.linalg.det(matrixA)
+
             solution *= determinantOfA
-            gcd = np.gcd.reduce(solution.astype(np.int64))
+
+            gcd = np.gcd.reduce(np.round(solution).astype(int))
             solution /= gcd
-            solution = solution.astype(np.int64)
+
+            solution = np.round(solution).astype(int)
+
+            print(f"1. {solution=}")
 
             for index, reactant in enumerate(reactants):
                 coefficient = abs(solution[index])[0]

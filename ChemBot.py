@@ -37,6 +37,9 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
+    if message.channel.name != "general":
+        print("Wrong Channel")
+        return
     if message.author == client.user:
         return
 
@@ -76,6 +79,16 @@ async def on_message(message):
                     await message.channel.send(f"{author} Molar Mass(es):\n {showMolarMass(compounds)}")
             else:
                 await message.channel.send(f"{author} missing inputs.")
+        elif command.startswith("formula"):
+            command = re.split(f"(?<=formula) ", command)
+            inputs = command[1] if len(command) > 1 else None
+
+            if inputs is not None:
+                inputs = re.split(r"-[a-z]", inputs)
+                print(inputs)
+            else:
+                await message.channel.send(f"{author} missing inputs.")
+
         # # Percent Composition
         # elif command.startswith("formula"):
         #     await message.channel.send(f"{author} Please enter the percentages")
