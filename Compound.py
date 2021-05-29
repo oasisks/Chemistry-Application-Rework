@@ -3,6 +3,9 @@ from ChemicalElements import periodic_table
 
 _nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
+_subscript = {1: "\u2081", 2: "\u2082", 3: "\u2083", 4: "\u2084", 5: "\u2085", 6: "\u2086", 7: "\u2087",
+              8: "\u2088", 9: "\u2089"}
+
 
 class Compound(dict):
     """
@@ -64,7 +67,8 @@ class Compound(dict):
             if coefficient == 1:
                 formula += f"{symbol}"
                 continue
-            formula += f"{symbol}{coefficient}"
+            formula += f"{symbol}{_subscript[coefficient]}"
+
 
         return formula
 
@@ -132,9 +136,10 @@ def test(verbose=True):
 
 if __name__ == "__main__":
     test()
-    compound = Compound("HCOF")
+    compound = Compound("H2O")
     mass = compound.molarMass(kg=True)
     composition = compound.percentComposition()
+    print(compound)
     print(mass)
     print(composition)
     print(Compound.isMalformed("H2O"))
