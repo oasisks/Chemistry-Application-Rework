@@ -58,7 +58,7 @@ class Formula(dict):
 
         multiplier = self.availableMass / compound.molarMass()
 
-        molecularFormula = {symbol: quantity * multiplier for symbol, quantity in empiricalFormula.items()}
+        molecularFormula = {symbol: round(quantity * multiplier) for symbol, quantity in empiricalFormula.items()}
 
         return molecularFormula
 
