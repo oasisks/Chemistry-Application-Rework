@@ -140,7 +140,7 @@ async def formula(inputs, author, channel):
     rawInputs = []
 
     for input in inputs:
-        rawInputs += re.split(r",\s+?|;\s+?|\s+", input)
+        rawInputs += [entry.strip() for entry in re.split(r",\s*?|;\s*?", input)]
 
     print(f"{rawInputs=}")
 
